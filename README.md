@@ -30,9 +30,50 @@ are doing):
 dd status=progress if=shamir-manage.iso of=/dev/<your USB stick device> bs=1M
 ```
 
+Log in using `root` user and `toor` as a password. If you want a minimal graphical environment launch `startx`.
+
+### Split a key
+
+To split a given key use the `ssss-split` command setting how many shares you want to create and how many of them are needed
+to recover the original key. Example where the key is divided in 5 pieces and can be recovered with any of 3 pieces):
+
+```shell
+echo "my key" | ssss-split -t 3 -n 5
+```
+
+Output:
+
+```
+Generating shares using a (3,5) scheme with dynamic security level.
+Enter the secret, at most 128 ASCII characters: Using a 48 bit security level.
+1-d8225f7f92ce
+2-f0256b9eae8c
+3-457e148a593d
+4-886b60f06069
+5-3d301fe497ca
+```
+
+### Recover a key
+
+To recover a key from the splitted keys, you can run the following command (using above split):
+
+```shell
+ssss-combine -t 3
+```
+
+Output:
+
+```
+Enter 3 shares separated by newlines:
+Share [1/3]: 2-f0256b9eae8c
+Share [2/3]: 4-886b60f06069
+Share [3/3]: 5-3d301fe497ca
+Resulting secret: my key
+```
+
 ## Download the image
 
-The latest image is published to the GitHub releases page.
+The latest image is published to the [GitHub releases page](https://github.com/aitorpazos/shamir-iso/releases).
 
 ## Build the image
 
