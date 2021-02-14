@@ -30,7 +30,10 @@ are doing):
 dd status=progress if=shamir-manage.iso of=/dev/<your USB stick device> bs=1M
 ```
 
-Log in using `root` user and `toor` as a password. If you want a minimal graphical environment launch `startx`.
+Log in using `root` user and `toor` as a password.
+
+**If your system has UEFI Secure Boot enabled, you will need to disable it or switch to BIOS mode (also called legacy mode)
+in your firmware options**
 
 ### Split a key
 
