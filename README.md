@@ -38,7 +38,7 @@ To split a given key use the `ssss-split` command setting how many shares you wa
 to recover the original key. Example where the key is divided in 5 pieces and can be recovered with any of 3 pieces):
 
 ```shell
-echo "my key" | ssss-split -t 3 -n 5
+echo "hello world" | ssss-split -t 3 -n 5
 ```
 
 Output:
@@ -46,11 +46,11 @@ Output:
 ```
 Generating shares using a (3,5) scheme with dynamic security level.
 Enter the secret, at most 128 ASCII characters: Using a 48 bit security level.
-1-d8225f7f92ce
-2-f0256b9eae8c
-3-457e148a593d
-4-886b60f06069
-5-3d301fe497ca
+1-79f847d32bc7d404219fe0
+2-358a7ebd071055db71670f
+3-ce9914f9142d07c513d320
+4-e937954b216efe6ffb2379
+5-1224ff0f3253ac71999744
 ```
 
 ### Recover a key
@@ -65,10 +65,10 @@ Output:
 
 ```
 Enter 3 shares separated by newlines:
-Share [1/3]: 2-f0256b9eae8c
-Share [2/3]: 4-886b60f06069
-Share [3/3]: 5-3d301fe497ca
-Resulting secret: my key
+Share [1/3]: 2-358a7ebd071055db71670f
+Share [2/3]: 4-e937954b216efe6ffb2379
+Share [3/3]: 5-1224ff0f3253ac71999744
+Resulting secret: hello world
 ```
 
 ## Download the image
