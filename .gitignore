@@ -2,3 +2,6 @@
 .idea
 **/*.iml
 .vscode
+
+# Generated ISO image
+**/*.iso
