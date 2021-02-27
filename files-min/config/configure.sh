@@ -30,10 +30,7 @@ cat > /root/.xinitrc << EOF
 exec icewm-session
 EOF
 
-#cat > /root/.profile << EOF
-#if [[ -z \$DISPLAY ]]; then
-#    exec startx
-#fi
-#EOF
+mkdir -p /root/Desktop
+mv /root/README.txt /root/Desktop/
 
 systemctl enable  user-autologin.service

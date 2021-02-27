@@ -30,7 +30,8 @@ are doing):
 dd status=progress if=shamir-manage.iso of=/dev/<your USB stick device> bs=1M
 ```
 
-Log in using `root` user and `toor` as a password.
+`root` user has the password set to `toor`.
+Xfce image starts as `user` (password `user`).
 
 **If your system has UEFI Secure Boot enabled, you will need to disable it or switch to BIOS mode (also called legacy mode)
 in your firmware options**
@@ -78,6 +79,9 @@ Resulting secret: hello world
 
 The latest image is published to the [GitHub releases page](https://github.com/aitorpazos/shamir-iso/releases).
 
-## Build the image
+## Build the images
 
-You can build the image yourself with `make build`.
+You can build the image yourself with `make`.
+
+`make minimal` will build the minimal image
+`make xfce` will build xfce based image
