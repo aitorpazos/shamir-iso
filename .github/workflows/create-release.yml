@@ -30,7 +30,7 @@ jobs:
           draft: true
           prerelease: false
       - name: Upload min Release Asset
-        id: upload-release-asset
+        id: upload-release-asset-min
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,7 +40,7 @@ jobs:
           asset_name: shamir-manage-min-${{ github.ref }}.iso
           asset_content_type: application/octet-stream
       - name: Upload xfce Release Asset
-        id: upload-release-asset 
+        id: upload-release-asset-xfce
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
