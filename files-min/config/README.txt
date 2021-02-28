@@ -14,3 +14,14 @@ split -n <n> <my file with the key>
 echo "My text" | qrencode -o <qr file.png>
 - Display QR image:
 display <qr file.png>
+
+If you are dealing with BIP39 word lists or seeds you can use the `hal` command:
+hal bip39 get-seed "your BIP words" | jq -r .entropy | ssss-split -t <x> -n <n>
+
+In order to recover the original words, you can run:
+ssss-combine -t <t>
+and then generate the words from the returned value:
+hal bip39 generate -w <number of words> --entropy <entropy value>
+
+If you don't select the correct number of words, the generation will fail. However the possible values are: 
+3, 6, 9, 12, 15, 18, 21 or 24 (the usual ones being 12 and 24).

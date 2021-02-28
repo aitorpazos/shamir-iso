@@ -13,6 +13,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: Build iso file
         id: build_iso
         run: make
@@ -37,7 +40,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./files-min/debian-custom.iso
-          asset_name: shamir-manage-min-${{ github.event.release.tag_name }}.iso
+          asset_name: shamir-manage-min-${{ steps.get_version.outputs.VERSION }}.iso
           asset_content_type: application/octet-stream
       - name: Upload xfce Release Asset
         id: upload-release-asset-xfce
@@ -47,5 +50,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./files-xfce/debian-custom.iso
-          asset_name: shamir-manage-xfce-${{ github.event.release.tag_name }}.iso
+          asset_name: shamir-manage-xfce-${{ steps.get_version.outputs.VERSION }}.iso
           asset_content_type: application/octet-stream

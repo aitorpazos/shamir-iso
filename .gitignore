@@ -1,3 +1,9 @@
+# Backup files
+**/*~
+
+# HAL binary
+hal
+
 # IDEs
 .idea
 **/*.iml

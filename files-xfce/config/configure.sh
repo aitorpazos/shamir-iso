@@ -7,6 +7,9 @@ apt-get purge -y iproute2 iputils-ping
 cp /root/shamir-background.png /usr/share/pixmaps/shamir-background.png
 chmod a+r /usr/share/pixmaps/shamir-background.png
 
+cp /root/hal /usr/bin/
+chmod a+rx /usr/bin/hal
+
 cat > /etc/skel/.config/epiphany/web-extension-settings.ini << EOF
 [org/gnome/epiphany]
 homepage-url='http://127.0.0.1:631/admin'

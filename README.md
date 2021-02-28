@@ -75,6 +75,21 @@ Share [3/3]: 5-1224ff0f3253ac71999744
 Resulting secret: hello world
 ```
 
+### BIP39 Keys
+
+If you want to use this image to backup or restore your crypto wallet words list, the image includes the `hal` command (from [https://github.com/stevenroose/hal](https://github.com/stevenroose/hal)) which provides different crypto related operations.
+
+For example:
+- Generate entropy value from words list and pass it to `ssss-split`:
+```shell
+hal bip39 get-seed "your BIP words" | jq -r .entropy | ssss-split -t <x> -n <n>
+```
+- Generate words list from entropy value:
+```shell
+hal bip39 generate -w <number of words> --entropy <entropy value>
+```
+If you don't select the correct number of words, the generation will fail. However the possible values are: 3, 6, 9, 12, 15, 18, 21 or 24 (the usual ones being 12 and 24).
+
 ## Download the image
 
 The latest image is published to the [GitHub releases page](https://github.com/aitorpazos/shamir-iso/releases).
@@ -85,3 +100,7 @@ You can build the image yourself with `make`.
 
 `make minimal` will build the minimal image
 `make xfce` will build xfce based image
+
+## TODO
+
+- Create image for arm64 boards
