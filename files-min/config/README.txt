@@ -10,6 +10,8 @@ ssss-combine -t <t>
 - If the key is longer than 128 characters, you can split it into n number of pieces using the following
  command:
 split -n <n> <my file with the key>
+- Generate PBKDF2 derived keys
+echo "My passphrase" | nettle-pbkdf2 -l<generated key length> <salt string>
 - Generate a QR image:
 echo "My text" | qrencode -o <qr file.png>
 - Display QR image:
