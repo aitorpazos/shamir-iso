@@ -3,6 +3,8 @@
 
 # HAL binary
 hal
+# scrypt-rs binary
+scrypt-rs
 
 # IDEs
 .idea
