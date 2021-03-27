@@ -9,7 +9,8 @@ chmod a+r /usr/share/pixmaps/shamir-background.png
 
 cp /root/hal /usr/bin/
 cp /root/scrypt-rs /usr/bin/
-chmod a+rx /usr/bin/hal /usr/bin/scrypt-rs
+cp /root/create-key-share-card /usr/bin/
+chmod a+rx /usr/bin/hal /usr/bin/scrypt-rs /usr/bin/create-key-share-card
 
 cat > /etc/skel/.config/epiphany/web-extension-settings.ini << EOF
 [org/gnome/epiphany]

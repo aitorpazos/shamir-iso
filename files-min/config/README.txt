@@ -16,6 +16,8 @@ echo "My passphrase" | scrypt-rs -l<generated key length> -s <salt string>
 echo "My text" | qrencode -o <qr file.png>
 - Display QR image:
 display <qr file.png>
+- Scan QR code using webcam:
+zbarcam --raw
 
 If you are dealing with BIP39 word lists or seeds you can use the `hal` command:
 hal bip39 get-seed "your BIP words" | jq -r .entropy | ssss-split -t <x> -n <n>

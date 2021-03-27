@@ -16,6 +16,8 @@ echo "My passphrase" | scrypt-rs -l<generated key length> -s <salt string>
 echo "My text" | qrencode -o <qr file.png>
 - Display QR image:
 display <qr file.png>
+- Scan QR code using webcam:
+zbarcam --raw
 
 If you are dealing with BIP39 word lists or seeds you can use the `hal` command:
 hal bip39 get-seed "your BIP words" | jq -r .entropy | ssss-split -t <x> -n <n>
@@ -29,6 +31,12 @@ If you don't select the correct number of words, the generation will fail. Howev
 3, 6, 9, 12, 15, 18, 21 or 24 (the usual ones being 12 and 24).
 
 ## Experimental USB printer support:
+
+- You can generate a card that you can print using your browser with the following command:
+create-key-share-card SHARE_NAME SHARE_KEY_VALUE
+
+This command will generate a SHARE_NAME.htm file that you can open in the browser and print it from it after you
+configure a printer.
 
 - Add a printer (user: user , password: user) using CUPS admin page in the browser:
 http://127.0.0.1:631/admin
