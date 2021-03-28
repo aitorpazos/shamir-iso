@@ -43,7 +43,7 @@ body { background-color: white; font-family: sans-serif}
 #key_text { height: 40mm; width: 60mm; }
 #key_text h1 { font-size: 12pt; font-weight: bold; margin: 1mm; }
 #key_text p { margin: 1mm; }
-#key_value { word-break: break-all }
+#key_value { font-size: 10pt; word-break: break-all }
 #key_qr { height: 40mm; width: 40mm; text-align: right; }
 #key_qr img { height: 100%; width: 100%; }
 #instructions { font-size: 8pt; display: block; margin: 0; }
