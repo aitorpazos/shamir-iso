@@ -38,23 +38,21 @@ in your firmware options**
 
 ### Split a key
 
-To split a given key use the `ssss-split` command setting how many shares you want to create and how many of them are needed
+To split a given key use the `ssss-rs split` command setting how many shares you want to create and how many of them are needed
 to recover the original key. Example where the key is divided in 5 pieces and can be recovered with any of 3 pieces):
 
 ```shell
-echo "hello world" | ssss-split -t 3 -n 5
+echo "hello world" | ssss-rs split -t3 -s5 -i -
 ```
 
 Output:
 
 ```
-Generating shares using a (3,5) scheme with dynamic security level.
-Enter the secret, at most 128 ASCII characters: Using a 48 bit security level.
-1-79f847d32bc7d404219fe0
-2-358a7ebd071055db71670f
-3-ce9914f9142d07c513d320
-4-e937954b216efe6ffb2379
-5-1224ff0f3253ac71999744
+017ec708e757c335e716f36b
+0274d0d41038183484dfffd0
+036272b09b00fb760cbb60df
+049091dc4b5de9c00fbcbf89
+058633b8c0650a8287d82086
 ```
 
 ### Recover a key
@@ -62,17 +60,16 @@ Enter the secret, at most 128 ASCII characters: Using a 48 bit security level.
 To recover a key from the splitted keys, you can run the following command (using above split):
 
 ```shell
-ssss-combine -t 3
+ssss-rs combine 0274d0d41038183484dfffd0 049091dc4b5de9c00fbcbf89 058633b8c0650a8287d82086
 ```
 
 Output:
 
 ```
-Enter 3 shares separated by newlines:
-Share [1/3]: 2-358a7ebd071055db71670f
-Share [2/3]: 4-e937954b216efe6ffb2379
-Share [3/3]: 5-1224ff0f3253ac71999744
-Resulting secret: hello world
+Recovered key: hello world
+Recovered key in base64: aGVsbG8gd29ybGQ=
+Error decoding key to hex (expected for non hexadecimal keys): OddLength
+BIP39 words list generation skipped
 ```
 
 ### BIP39 Keys

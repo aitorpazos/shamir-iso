@@ -5,6 +5,8 @@
 hal
 # scrypt-rs binary
 scrypt-rs
+# ssss-rs binary
+ssss-rs
 
 # IDEs
 .idea

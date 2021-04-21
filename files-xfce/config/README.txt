@@ -3,13 +3,10 @@
 These commands are only provided to try to help you in the use of this image. 
 
 They may or may not suit your needs.
-- Split a key in n number of pieces that you can recover with any x number of them (max 128 characters):
-echo "My key" | ssss-split -t <x> -n <n>
+- Split a key in n number of pieces that you can recover with any x number of them:
+echo "My key" | ssss-rs split -t <x> -s <n> -i -
 - Recover the key from t number of pieces:
-ssss-combine -t <t>
-- If the key is longer than 128 characters, you can split it into n number of pieces using the following
- command:
-split -n <n> <my file with the key>
+ssss-rs combine <shares space separated>
 - Generate scrypt derived keys
 echo "My passphrase" | scrypt-rs -l<generated key length> -s <salt string>
 - Generate a QR image:
@@ -20,10 +17,10 @@ display <qr file.png>
 zbarcam --raw
 
 If you are dealing with BIP39 word lists or seeds you can use the `hal` command:
-hal bip39 get-seed "your BIP words" | jq -r .entropy | ssss-split -t <x> -n <n>
+hal bip39 get-seed "your BIP words" | jq -r .entropy | ssss-rs split -t <x> -s <n> -i -
 
 In order to recover the original words, you can run:
-ssss-combine -t <t>
+ssss-rs combine <shares space separated>
 and then generate the words from the returned value:
 hal bip39 generate -w <number of words> --entropy <entropy value>
 

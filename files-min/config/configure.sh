@@ -7,7 +7,8 @@ apt-get purge -y iproute2 iputils-ping
 cp /root/shamir-background.png /usr/share/pixmaps/shamir-background.png
 cp /root/hal /usr/bin/
 cp /root/scrypt-rs /usr/bin/
-chmod a+rx /usr/bin/hal /usr/bin/scrypt-rs
+cp /root/ssss-rs /usr/bin/
+chmod a+rx /usr/bin/hal /usr/bin/scrypt-rs /usr/bin/ssss-rs
 
 cat > /etc/systemd/system/user-autologin.service << EOF
 [Unit]
