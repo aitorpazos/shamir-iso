@@ -1,54 +1,56 @@
+name: Release
+
 on:
   push:
-    # Sequence of patterns matched against refs/tags
     tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - "v*"
 
-name: Create Release
+permissions:
+  contents: write
 
 jobs:
   build:
-    name: Create Release
+    name: Build ISO (${{ matrix.variant }})
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        variant: [min, xfce]
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      - name: Build iso file
-        id: build_iso
-        run: make
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      - uses: actions/checkout@v4
+
+      - name: Build ${{ matrix.variant }} ISO
+        run: make ${{ matrix.variant == 'min' && 'minimal' || 'xfce' }}
+
+      - name: Get version
+        id: version
+        run: echo "version=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+
+      - name: Rename ISO
+        run: |
+          mv files-${{ matrix.variant }}/custom-debian.iso \
+             shamir-manage-${{ matrix.variant }}-${{ steps.version.outputs.version }}.iso
+
+      - uses: actions/upload-artifact@v4
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - First Change
+          name: shamir-manage-${{ matrix.variant }}
+          path: shamir-manage-${{ matrix.variant }}-*.iso
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
           draft: true
-          prerelease: false
-      - name: Upload min Release Asset
-        id: upload-release-asset-min
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./files-min/debian-custom.iso
-          asset_name: shamir-manage-min-${{ steps.get_version.outputs.VERSION }}.iso
-          asset_content_type: application/octet-stream
-      - name: Upload xfce Release Asset
-        id: upload-release-asset-xfce
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./files-xfce/debian-custom.iso
-          asset_name: shamir-manage-xfce-${{ steps.get_version.outputs.VERSION }}.iso
-          asset_content_type: application/octet-stream
+          files: artifacts/**/*.iso

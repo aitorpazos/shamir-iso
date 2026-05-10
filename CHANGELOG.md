@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-05-11
+
+### Changed
+
+- Updated `ssss-rs` from 0.1.0 to 1.0.0 (modernized Rust crate dependencies)
+- Updated `scrypt-rs` from 0.3.0 to 1.0.0 (modernized Rust crate dependencies)
+- Updated `hal` from 0.6.1 to 0.9.3 (now built from vendored source tarball)
+- Updated `create-debian-iso` from 0.2.0 to 0.4.0
+- Modernized CI release workflow (actions/checkout@v4, softprops/action-gh-release@v2)
+- Makefile supports architecture selection (`ARCH=amd64` or `ARCH=arm64`)
+
+### Fixed
+
+- Typo in README.txt tips file ("Sharmir" → "Shamir")
+
 ## [0.9.0] - 2021-04-22
 
 ### Changed

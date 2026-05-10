@@ -1,4 +1,4 @@
-# Sharmir ISO tips
+# Shamir ISO tips
 
 These commands are only provided to try to help you in the use of this image. 
 

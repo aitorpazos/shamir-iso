@@ -1,8 +1,8 @@
 # Shamir ISO
 
-This project creates an ISO image with enough tooling to create and recover Shamir keys with [ssss](http://point-at-infinity.org/ssss/).
+This project creates an ISO image with enough tooling to create and recover Shamir keys using [ssss-rs](https://github.com/aitorpazos/ssss-rs).
 
-It uses the https://github.com/aitorpazos/create-debian-iso project to generate the ISO images.
+It uses the [create-debian-iso](https://github.com/aitorpazos/create-debian-iso) project to generate the ISO images.
 
 ## Why bother?
 
@@ -16,30 +16,48 @@ doesn't do any persistence to disk. It is just your device firmware + the little
 Even running it in a VM may provide a safer environment than your usual OS, but not as safe as booting into it.
 
 Use cases include:
-    - Store pieces in multiple sites to protect against losing the key in case of a disaster
-    - Share cryptocurrencies seeds with multiple people but prevent any of them to use the seed without the knowledge
-      of the rest of participants
+- Store pieces in multiple sites to protect against losing the key in case of a disaster
+- Share cryptocurrency seeds with multiple people but prevent any of them from using the seed without the knowledge
+  of the rest of participants
+
+## Included tools
+
+| Tool | Version | Description |
+|------|---------|-------------|
+| [ssss-rs](https://github.com/aitorpazos/ssss-rs) | 1.0.0 | Shamir's Secret Sharing split/combine |
+| [scrypt-rs](https://github.com/aitorpazos/scrypt-rs) | 1.0.0 | scrypt key derivation |
+| [hal](https://github.com/stevenroose/hal) | 0.9.3 | Bitcoin/BIP39 utilities |
+| qrencode | — | QR code generation |
+| zbar-tools | — | QR code scanning (webcam) |
+
+## Download the image
+
+The latest image is published to the [GitHub releases page](https://github.com/aitorpazos/shamir-iso/releases).
+
+Two variants are available:
+- **minimal** — IceWM, CLI-focused, smallest footprint
+- **xfce** — XFCE desktop with printing support and a card generator script
 
 ## Run the image
 
-To run this image, you can run it in a VM by selecting it as the CD-ROM image and booting from it or you can burn it into
-a CD. You can also write it to an USB memory stick with the following command (only use this command if you know what you
-are doing):
+You can run this image in a VM by selecting it as the CD-ROM image and booting from it, or burn it to a CD/USB stick.
+
+To write it to a USB memory stick (**this will erase all data on the device**):
 
 ```shell
 dd status=progress if=shamir-manage.iso of=/dev/<your USB stick device> bs=1M
 ```
 
-`root` user has the password set to `toor`.
-Xfce image starts as `user` (password `user`).
+**Credentials:**
+- Minimal image: `root` / `toor`
+- XFCE image: `user` / `user` (starts as `user`)
 
-**If your system has UEFI Secure Boot enabled, you will need to disable it or switch to BIOS mode (also called legacy mode)
-in your firmware options**
+> **Note:** If your system has UEFI Secure Boot enabled, you will need to disable it or switch to BIOS/legacy mode
+> in your firmware options.
 
 ### Split a key
 
-To split a given key use the `ssss-rs split` command setting how many shares you want to create and how many of them are needed
-to recover the original key. Example where the key is divided in 5 pieces and can be recovered with any of 3 pieces):
+To split a given key, use the `ssss-rs split` command. Example where the key is divided in 5 pieces and can be recovered with any 3 of them:
 
 ```shell
 echo "hello world" | ssss-rs split -t3 -s5 -i -
@@ -57,7 +75,7 @@ Output:
 
 ### Recover a key
 
-To recover a key from the splitted keys, you can run the following command (using above split):
+To recover a key from the split shares:
 
 ```shell
 ssss-rs combine 0274d0d41038183484dfffd0 049091dc4b5de9c00fbcbf89 058633b8c0650a8287d82086
@@ -74,30 +92,50 @@ BIP39 words list generation skipped
 
 ### BIP39 Keys
 
-If you want to use this image to backup or restore your crypto wallet words list, the image includes the `hal` command (from [https://github.com/stevenroose/hal](https://github.com/stevenroose/hal)) which provides different crypto related operations.
+If you want to use this image to backup or restore your crypto wallet words list, the image includes the `hal` command which provides different crypto related operations.
 
 For example:
-- Generate entropy value from words list and pass it to `ssss-split`:
+- Generate entropy value from words list and pass it to `ssss-rs split`:
 ```shell
-hal bip39 get-seed "your BIP words" | jq -r .entropy | ssss-split -t <x> -n <n>
+hal bip39 get-seed "your BIP words" | jq -r .entropy | ssss-rs split -t <x> -s <n> -i -
 ```
 - Generate words list from entropy value:
 ```shell
 hal bip39 generate -w <number of words> --entropy <entropy value>
 ```
-If you don't select the correct number of words, the generation will fail. However the possible values are: 3, 6, 9, 12, 15, 18, 21 or 24 (the usual ones being 12 and 24).
+The possible number of words are: 3, 6, 9, 12, 15, 18, 21 or 24 (the usual ones being 12 and 24).
 
-## Download the image
+### Generate a QR code
 
-The latest image is published to the [GitHub releases page](https://github.com/aitorpazos/shamir-iso/releases).
+```shell
+echo "My text" | qrencode -o qr.png
+display qr.png
+```
+
+### Scan a QR code (webcam)
+
+```shell
+zbarcam --raw
+```
+
+### Print a share card (XFCE image only)
+
+```shell
+create-key-share-card SHARE_NAME SHARE_KEY_VALUE
+```
+
+This generates an HTML file with a printable card containing the share value and a QR code.
 
 ## Build the images
 
-You can build the image yourself with `make`.
+You can build the images yourself with `make`. A Rust toolchain and Docker are required.
 
-`make minimal` will build the minimal image
-`make xfce` will build xfce based image
+```shell
+make minimal   # Build the minimal (IceWM) image
+make xfce      # Build the XFCE image
+make           # Build both
+```
 
-## TODO
+## License
 
-- Create image for arm64 boards
+GPLv3
